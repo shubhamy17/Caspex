@@ -1,5 +1,5 @@
 import React from 'react';
-import Grid from '@mui/material/Grid'; // Reverting to standard Grid import
+import Grid from '@mui/material/Grid';
 import {
   Card,
   CardMedia,
@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { Character } from '../types';
 
+// Component to display a grid of characters
 interface CharacterGridProps {
   characters: Character[];
 }

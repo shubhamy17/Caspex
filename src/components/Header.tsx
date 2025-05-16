@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
+// Component for the application header
 interface HeaderProps {
   onMenuClick?: () => void;
 }

@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { Episode } from '../types';
 
+// Component to display a list of episodes
 interface EpisodeListProps {
   episodes: Episode[];
   selectedId: number | null;

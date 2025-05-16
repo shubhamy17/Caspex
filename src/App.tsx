@@ -17,6 +17,7 @@ import { Episode, Character } from './types';
 
 const drawerWidth = 300;
 
+// Main application component for displaying episodes and characters
 const App: React.FC = () => {
   const [episodes, setEpisodes] = useState<Episode[]>([]);
   const [characters, setCharacters] = useState<Character[]>([]);

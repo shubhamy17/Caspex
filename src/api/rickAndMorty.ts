@@ -1,3 +1,5 @@
+// API functions to fetch data from the Rick and Morty API
+
 import axios from 'axios';
 import { Character, Episode } from '../types';
 
