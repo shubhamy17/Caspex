@@ -2,12 +2,9 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Drawer,
-  IconButton,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-
 import Header from './components/Header';
 import EpisodeList from './components/EpisodeList';
 import CharacterGrid from './components/CharacterGrid';
@@ -16,13 +13,14 @@ import {
   fetchEpisodes,
   fetchCharactersByUrls,
 } from './api/rickAndMorty';
+import { Episode, Character } from './types';
 
 const drawerWidth = 300;
 
-const App = () => {
-  const [episodes, setEpisodes] = useState([]);
-  const [characters, setCharacters] = useState([]);
-  const [selectedEpisode, setSelectedEpisode] = useState(null);
+const App: React.FC = () => {
+  const [episodes, setEpisodes] = useState<Episode[]>([]);
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [selectedEpisode, setSelectedEpisode] = useState<Episode | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const theme = useTheme();
@@ -48,12 +46,14 @@ const App = () => {
     }
   }, [selectedEpisode]);
 
-  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
 
   const drawerContent = (
     <EpisodeList
       episodes={episodes}
-      selectedId={selectedEpisode?.id}
+      selectedId={selectedEpisode?.id ?? null}
       onSelect={(ep) => {
         setSelectedEpisode(ep);
         if (isMobile) setMobileOpen(false);
@@ -110,7 +110,7 @@ const App = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          // ml: { md: `${drawerWidth}px` },
+        
           mt: '64px',
           height: 'calc(100vh - 64px)',
           overflowY: 'auto',

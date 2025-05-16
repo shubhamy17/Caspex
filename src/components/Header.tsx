@@ -10,7 +10,11 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
-const Header = ({ onMenuClick }) => {
+interface HeaderProps {
+  onMenuClick?: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -18,7 +22,13 @@ const Header = ({ onMenuClick }) => {
     <AppBar position="fixed" sx={{ backgroundColor: '#1e1e2f' }}>
       <Toolbar>
         {isMobile && (
-          <IconButton color="inherit" edge="start" onClick={onMenuClick} sx={{ mr: 2 }}>
+          <IconButton
+            color="inherit"
+            edge="start"
+            onClick={onMenuClick}
+            sx={{ mr: 2 }}
+            aria-label="open drawer"
+          >
             <MenuIcon />
           </IconButton>
         )}

@@ -7,8 +7,15 @@ import {
   Typography,
   Divider,
 } from '@mui/material';
+import { Episode } from '../types';
 
-const EpisodeList = ({ episodes, selectedId, onSelect }) => {
+interface EpisodeListProps {
+  episodes: Episode[];
+  selectedId: number | null;
+  onSelect: (episode: Episode | null) => void;
+}
+
+const EpisodeList: React.FC<EpisodeListProps> = ({ episodes, selectedId, onSelect }) => {
   return (
     <Box
       sx={{
