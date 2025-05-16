@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Box } from '@mui/material';
+import {
+  Box,
+  Drawer,
+  IconButton,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+
+import Header from './components/Header';
 import EpisodeList from './components/EpisodeList';
 import CharacterGrid from './components/CharacterGrid';
 import {
@@ -8,10 +17,16 @@ import {
   fetchCharactersByUrls,
 } from './api/rickAndMorty';
 
+const drawerWidth = 300;
+
 const App = () => {
   const [episodes, setEpisodes] = useState([]);
   const [characters, setCharacters] = useState([]);
   const [selectedEpisode, setSelectedEpisode] = useState(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
     const loadData = async () => {
@@ -33,14 +48,74 @@ const App = () => {
     }
   }, [selectedEpisode]);
 
+  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
+
+  const drawerContent = (
+    <EpisodeList
+      episodes={episodes}
+      selectedId={selectedEpisode?.id}
+      onSelect={(ep) => {
+        setSelectedEpisode(ep);
+        if (isMobile) setMobileOpen(false);
+      }}
+    />
+  );
+
   return (
     <Box sx={{ display: 'flex' }}>
-      <EpisodeList
-        episodes={episodes}
-        selectedId={selectedEpisode?.id}
-        onSelect={(ep) => setSelectedEpisode(ep)}
-      />
-      <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
+      <Header onMenuClick={handleDrawerToggle} />
+
+      {/* Mobile Drawer */}
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          display: { xs: 'block', md: 'none' },
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            boxSizing: 'border-box',
+          },
+        }}
+      >
+        {drawerContent}
+      </Drawer>
+
+      {/* Desktop Sidebar */}
+      <Box
+        component="nav"
+        sx={{
+          width: { md: drawerWidth },
+          flexShrink: { md: 0 },
+          display: { xs: 'none', md: 'block' },
+        }}
+      >
+        <Box
+          sx={{
+            width: drawerWidth,
+            height: 'calc(100vh - 64px)',
+            position: 'fixed',
+            top: '64px',
+            borderRight: '1px solid #ddd',
+            backgroundColor: '#fff',
+          }}
+        >
+          {drawerContent}
+        </Box>
+      </Box>
+
+      {/* Main Content */}
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          // ml: { md: `${drawerWidth}px` },
+          mt: '64px',
+          height: 'calc(100vh - 64px)',
+          overflowY: 'auto',
+        }}
+      >
         <CharacterGrid characters={characters} />
       </Box>
     </Box>
